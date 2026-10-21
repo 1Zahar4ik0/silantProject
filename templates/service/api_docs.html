@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<article class="docs panel">
+    <h1>REST API</h1>
+    <p>API позволяет читать данные сервисной книжки в JSON. Авторизация — сессия Django: сначала войдите на сайте. Для
+        клиента и сервисной организации выдаются только записи их машин. Менеджер видит все записи.</p>
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>GET</th>
+                    <th>Назначение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>/api/machines/</code></td>
+                    <td>Машины</td>
+                </tr>
+                <tr>
+                    <td><code>/api/maintenances/</code></td>
+                    <td>ТО</td>
+                </tr>
+                <tr>
+                    <td><code>/api/claims/</code></td>
+                    <td>Рекламации</td>
+                </tr>
+                <tr>
+                    <td><code>/api/machines/1/</code></td>
+                    <td>Карточка по ID; аналогично для ТО и рекламаций</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h2>Фильтры</h2>
+    <p>Передавайте ID записи справочника или пользователя в строке запроса:</p>
+    <ul>
+        <li>Машины: <code>machine_model, engine_model, transmission_model, steer_axle_model, drive_axle_model</code>.
+        </li>
+        <li>ТО: <code>maintenance_type, machine, service_company</code>. Параметр machine — ID машины (заводской номер
+            указан в поле machine_number ответа).</li>
+        <li>Рекламации: <code>failure_node, recovery_method, service_company</code>.</li>
+    </ul>
+    <p><code>order=asc</code> — от старых к новым. По умолчанию — от новых к старым: по дате отгрузки, ТО или отказа
+        соответственно. <code>page=2</code> — следующая страница (25 записей на странице). <code>format=json</code> —
+        явный выбор JSON.</p>
+    <p>Пример: <code>/api/maintenances/?machine=1&amp;order=asc&amp;format=json</code></p>
+    <p>Списки возвращают объект <code>{"count": 10, "next": null, "previous": null, "results": [...]}</code>.
+        Справочники вложены в записи и содержат ID, вид, название и описание. Даты имеют формат YYYY-MM-DD. Простой
+        рассчитывается в днях, для незакрытой рекламации равен null.</p>
+    <h2>Коды ответа</h2>
+    <p>200 — успех; 400 — неверный фильтр; 403 — нет авторизации; 404 — запись не найдена или недоступна; 405 — метод
+        записи не поддерживается. Изменение данных выполняется через формы сайта.</p>
+</article>{% endblock %}

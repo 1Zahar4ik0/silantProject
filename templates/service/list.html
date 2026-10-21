@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-heading">
+  <div>
+    <h1>{{ title }}</h1>
+    <p class="muted">Данные о доступной вам технике</p>
+  </div>{% if editable %}<a class="button" href="{% url 'record_add' section %}">+ Добавить запись</a>{% endif %}
+</div>
+<form method="get" class="filters panel">
+  <div class="filter-fields">
+    {% for field in filter_form %}<div class="field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor
+    %}
+  </div>
+  <div class="filter-actions"><button type="submit">Применить</button><a class="button secondary"
+      href="{% url 'records' section %}">Сбросить</a></div>
+</form>
+<section class="panel">
+  <div class="table-caption"><span>Всего записей: {{ page_obj.paginator.count }}</span><span class="muted">Нажмите на
+      строку, чтобы открыть карточку</span></div>
+  {% include 'service/table.html' %}
+  {% if page_obj.has_other_pages %}<nav class="pagination" aria-label="Страницы таблицы">
+    {% if page_obj.has_previous %}<a href="?{{ query }}&page={{ page_obj.previous_page_number }}">← Назад</a>{% endif %}
+    <span>{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a href="?{{ query }}&page={{ page_obj.next_page_number }}">Вперёд →</a>{% endif %}
+  </nav>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}<section class="panel">
+    <h1>Регистрация закрыта</h1>
+    <p>Учётные записи создаёт администратор. Обратитесь к нему для получения логина и пароля.</p><a
+        href="{% url 'account_login' %}">Войти</a>
+</section>{% endblock %}

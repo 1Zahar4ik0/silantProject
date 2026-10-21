@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back" href="{{ back_url }}">← К списку</a>
+<div class="section-heading">
+  <h1>{{ title }}</h1>{% if editable %}<a class="button"
+    href="{% url 'record_edit' section object.pk %}">Редактировать</a>{% endif %}
+</div>
+<dl class="details panel">
+  {% for label, value in details %}<div>
+    <dt>{{ label }}</dt>
+    <dd>{{ value|default_if_none:'—'|linebreaksbr }}{% if value.description %}<p class="description">{{
+        value.description|linebreaksbr }}</p>{% endif %}</dd>
+  </div>{% endfor %}
+</dl>
+{% if section == 'claims' and not object.recovery_date %}<p class="message">Восстановление ещё не завершено. Время
+  простоя будет рассчитано после указания даты восстановления.</p>{% endif %}
+{% endblock %}

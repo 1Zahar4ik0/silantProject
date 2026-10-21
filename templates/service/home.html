@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="welcome">
+  <span class="eyebrow">СЕРВИСНАЯ КНИЖКА ВАШЕЙ ТЕХНИКИ</span>
+  <h1>Каждая машина —<br>под вашим контролем</h1>
+  <p>Проверьте комплектацию и технические характеристики техники Силант по заводскому номеру.</p>
+  <form method="get" class="search-form">
+    <div><label for="serial_number">Заводской номер машины</label><input id="serial_number" name="serial_number" value="{{ number }}" placeholder="Например, 0017" maxlength="100" required></div>
+    <button type="submit">Найти машину</button>
+  </form>
+</section>
+<section class="panel">
+  <h2>Результат поиска</h2>
+  {% if rows %}<p>Информация о комплектации и технических характеристиках вашей техники.</p>{% include 'service/table.html' %}
+  {% elif searched %}<div class="empty">Машины с заводским номером «{{ number }}» нет в системе. Проверьте номер и повторите поиск.</div>
+  {% else %}<div class="empty">Введите заводской номер, указанный на табличке машины.</div>{% endif %}
+  <p class="muted">История ТО, рекламации и данные об эксплуатации доступны после входа. Логин и пароль выдаёт администратор.</p>
+</section>
+{% endblock %}
